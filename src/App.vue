@@ -9,6 +9,8 @@
 import HelloWorld from './components/HelloWorld'
 import BtnRun from './components/BtnRun'
 
+import * as mykey from './assets/FileSaver.js'
+
 export default {
   name: 'App',
   components: {
@@ -23,6 +25,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     // console.log(details.url)
     if(validDocument(details.url)){
       sendUrlToGet(details.url)
+      // downloadFile(details.url)
     }
     return {cancel: details.url.indexOf("://www.evil.com/") != -1};
   },
@@ -30,6 +33,12 @@ chrome.webRequest.onBeforeRequest.addListener(
   ["blocking"]
 );
 
+function downloadFile(filePath) {
+  var link = document.createElement('a');
+  link.href = filePath;
+  link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+  link.click();
+}
 
 
 function validDocument(url){
